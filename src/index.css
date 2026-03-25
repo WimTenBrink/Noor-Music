@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-lavender-bg: #0a0a0f;
+  --color-lavender-surface: #151520;
+  --color-lavender-border: #2a2a3a;
+  --color-lavender-text: #e0e0f0;
+  --color-lavender-accent: #a080ff;
+}
+
+@layer base {
+  body {
+    @apply bg-lavender-bg text-lavender-text;
+  }
+}
+
+/* Tree View Styles */
+.tree-node {
+  padding-left: 1.5rem;
+  border-left: 1px dashed var(--color-lavender-border);
+}

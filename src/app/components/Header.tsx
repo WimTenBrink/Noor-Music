@@ -1,0 +1,120 @@
+import React, { useState } from 'react';
+import { NoorLogo } from './NoorLogo';
+import { FileText, Edit, Settings, HelpCircle, ChevronDown, Wand2, Terminal } from 'lucide-react';
+import { cn } from '../../lib/utils';
+
+interface HeaderProps {
+  onAction: (action: string) => void;
+  onGenerate: () => void;
+  onShowLogs: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onAction, onGenerate, onShowLogs }) => {
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+
+  const menus = [
+    {
+      id: 'file',
+      label: 'File',
+      icon: <FileText size={16} />,
+      items: [
+        { id: 'load', label: 'Load' },
+        { id: 'save', label: 'Save' },
+        { id: 'clear', label: 'Clear' },
+      ]
+    },
+    {
+      id: 'edit',
+      label: 'Edit',
+      icon: <Edit size={16} />,
+      items: [
+        { id: 'cut', label: 'Cut' },
+        { id: 'copy', label: 'Copy' },
+        { id: 'paste', label: 'Paste' },
+      ]
+    },
+    {
+      id: 'settings',
+      label: 'Settings',
+      icon: <Settings size={16} />,
+      items: [
+        { id: 'api-key', label: 'API Key' },
+      ]
+    },
+    {
+      id: 'help',
+      label: 'Help',
+      icon: <HelpCircle size={16} />,
+      items: [
+        { id: 'system-instructions', label: 'System Instructions' },
+        { id: 'manual', label: 'Manual' },
+        { id: 'code-overview', label: 'Code Overview' },
+      ]
+    }
+  ];
+
+  return (
+    <header className="h-14 border-b border-lavender-border bg-lavender-bg flex items-center justify-between px-4 z-50">
+      <div className="flex items-center gap-8">
+        <div className="flex items-center gap-3">
+          <NoorLogo className="w-8 h-8 text-lavender-accent" />
+          <h1 className="text-xl font-bold tracking-tighter text-lavender-accent">Noor Music</h1>
+        </div>
+
+        <nav className="flex items-center gap-2">
+          {menus.map(menu => (
+            <div key={menu.id} className="relative">
+              <button 
+                onClick={() => setActiveMenu(activeMenu === menu.id ? null : menu.id)}
+                className={cn(
+                  "flex items-center gap-2 px-3 py-1.5 rounded text-sm font-bold transition-colors",
+                  activeMenu === menu.id ? "bg-lavender-surface text-lavender-accent" : "hover:bg-lavender-surface/50"
+                )}
+              >
+                {menu.icon}
+                {menu.label}
+                <ChevronDown size={14} className={cn("transition-transform", activeMenu === menu.id && "rotate-180")} />
+              </button>
+
+              {activeMenu === menu.id && (
+                <div className="absolute top-full left-0 mt-1 w-48 bg-lavender-surface border border-lavender-border rounded shadow-xl py-1 z-50">
+                  {menu.items.map(item => (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        onAction(item.id);
+                        setActiveMenu(null);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm hover:bg-lavender-accent hover:text-lavender-bg transition-colors"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
+      </div>
+
+      <div className="flex items-center gap-4">
+        <button 
+          onClick={onShowLogs}
+          className="p-2 hover:bg-lavender-surface rounded text-lavender-text/70"
+          title="Show Logs"
+        >
+          <Terminal size={20} />
+        </button>
+        <button 
+          onClick={onGenerate}
+          className="flex items-center gap-2 px-6 py-2 bg-lavender-accent text-lavender-bg font-bold rounded-full hover:opacity-90 transition-all shadow-lg shadow-lavender-accent/20"
+        >
+          <Wand2 size={18} />
+          Generate Song
+        </button>
+      </div>
+
+      {activeMenu && <div className="fixed inset-0 z-40" onClick={() => setActiveMenu(null)} />}
+    </header>
+  );
+};
