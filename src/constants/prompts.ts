@@ -1,6 +1,9 @@
-export const GENERATE_PROMPT = (instructions: string, instruments: string[], styles: string[]) => `
+export const GENERATE_PROMPT = (instructions: string, instruments: string[], styles: string[], rating: string) => `
 Generate a new song based on the following user instructions:
 "${instructions}"
+
+Content Rating: ${rating}
+(Ensure the lyrics and themes strictly adhere to the ${rating} rating guidelines as defined in your system instructions.)
 
 Selected Musical Elements to include:
 - Styles: ${styles.length > 0 ? styles.join(", ") : "None selected (use default Noor style)"}

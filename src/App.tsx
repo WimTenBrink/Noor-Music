@@ -13,6 +13,7 @@ import { JobDialog } from './app/components/JobDialog';
 import { LogDialog } from './app/components/LogDialog';
 import { HelpDialog } from './app/components/HelpDialog';
 import { GenerateDialog } from './app/components/GenerateDialog';
+import { KaraokeDialog } from './app/components/KaraokeDialog';
 import { useNoorApp } from './app/hooks/useNoorApp';
 import { useLogs } from './app/hooks/useLogs';
 import { TextView } from './app/components/TextView';
@@ -35,6 +36,10 @@ export default function App() {
     setShowLogs,
     showGenerate,
     setShowGenerate,
+    showKaraoke,
+    setShowKaraoke,
+    rating,
+    setRating,
     helpContent,
     setHelpContent,
     handleAction,
@@ -95,6 +100,8 @@ export default function App() {
         onAction={handleAction} 
         onGenerate={() => setShowGenerate(true)}
         onShowLogs={() => setShowLogs(true)}
+        rating={rating}
+        setRating={setRating}
       />
       
       <main className="flex-1 flex overflow-hidden">
@@ -146,6 +153,13 @@ export default function App() {
         onConfirm={handleGenerate} 
         selectedInstruments={selectedInstruments}
         selectedStyles={selectedStyles}
+      />
+
+      <KaraokeDialog 
+        isOpen={showKaraoke}
+        onClose={() => setShowKaraoke(false)}
+        title={song.title}
+        lyrics={song.lyrics}
       />
     </div>
   );

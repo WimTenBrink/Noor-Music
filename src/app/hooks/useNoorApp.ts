@@ -13,6 +13,8 @@ export function useNoorApp() {
   const [activeJob, setActiveJob] = useState<Job | null>(null);
   const [showLogs, setShowLogs] = useState(false);
   const [showGenerate, setShowGenerate] = useState(false);
+  const [showKaraoke, setShowKaraoke] = useState(false);
+  const [rating, setRating] = useState<string>('PG');
   const [helpContent, setHelpContent] = useState<{ title: string; content: string } | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [leftLibrary, setLeftLibrary] = useState<LibraryItem[]>([]);
@@ -62,9 +64,9 @@ export function useNoorApp() {
   }, [selectedInstruments, selectedStyles]);
 
   const handleGenerate = (instructions: string) => {
-    const prompt = GENERATE_PROMPT(instructions, selectedInstruments, selectedStyles);
+    const prompt = GENERATE_PROMPT(instructions, selectedInstruments, selectedStyles, rating);
     const jobId = addJob(`Generate: ${instructions.substring(0, 20)}...`, 'normal', prompt, apiKey || '');
-    log('info', 'Job Added', `New generation job added: ${jobId}`);
+    log('info', 'Job Added', `New generation job added: ${jobId} (Rating: ${rating})`);
     setShowGenerate(false);
   };
 
@@ -197,6 +199,13 @@ export function useNoorApp() {
           log('info', 'API Key Updated', 'New API key selected.');
         }
         break;
+      case 'karaoke':
+        if (!song.lyrics) {
+          log('warn', 'Karaoke Warning', 'No lyrics available to display.');
+          return;
+        }
+        setShowKaraoke(true);
+        break;
       case 'system-instructions':
       case 'manual':
       case 'code-overview':
@@ -249,6 +258,10 @@ export function useNoorApp() {
     setShowLogs,
     showGenerate,
     setShowGenerate,
+    showKaraoke,
+    setShowKaraoke,
+    rating,
+    setRating,
     helpContent,
     setHelpContent,
     handleAction,

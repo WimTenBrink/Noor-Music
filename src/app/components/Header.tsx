@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { NoorLogo } from './NoorLogo';
-import { FileText, Edit, Settings, HelpCircle, ChevronDown, Wand2, Terminal } from 'lucide-react';
+import { FileText, Edit, Settings, HelpCircle, ChevronDown, Wand2, Terminal, Mic2 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 interface HeaderProps {
   onAction: (action: string) => void;
   onGenerate: () => void;
   onShowLogs: () => void;
+  rating: string;
+  setRating: (rating: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onAction, onGenerate, onShowLogs }) => {
+export const Header: React.FC<HeaderProps> = ({ onAction, onGenerate, onShowLogs, rating, setRating }) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   const menus = [
@@ -104,6 +106,29 @@ export const Header: React.FC<HeaderProps> = ({ onAction, onGenerate, onShowLogs
           title="Show Logs"
         >
           <Terminal size={20} />
+        </button>
+
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-lavender-surface rounded border border-lavender-border">
+          <span className="text-[10px] font-bold text-lavender-text/50 uppercase tracking-widest">Rating</span>
+          <select 
+            value={rating} 
+            onChange={(e) => setRating(e.target.value)}
+            className="bg-transparent text-sm font-bold text-lavender-accent outline-none cursor-pointer"
+          >
+            <option value="G">G</option>
+            <option value="PG">PG</option>
+            <option value="PG-13">PG-13</option>
+            <option value="R">R</option>
+            <option value="NC-17">NC-17</option>
+          </select>
+        </div>
+
+        <button 
+          onClick={() => onAction('karaoke')}
+          className="flex items-center gap-2 px-4 py-2 border border-lavender-accent text-lavender-accent font-bold rounded-full hover:bg-lavender-accent hover:text-lavender-bg transition-all"
+        >
+          <Mic2 size={18} />
+          Karaoke
         </button>
         <button 
           onClick={onGenerate}
