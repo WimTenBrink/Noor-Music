@@ -10,6 +10,7 @@ Selected Musical Elements to include:
 - Instruments: ${instruments.length > 0 ? instruments.join(", ") : "None selected (use default Noor instruments)"}
 
 Please ensure the lyrics reflect the band's persona (Noor) and their specific relationships and musical skills as defined in your system instructions.
-In the lyrics, use tags that include both the singer's name, their voice type, and their relationship context where appropriate (e.g., [Miranda - Soprano], [All - Quartet], [Miranda (Soprano) & Annelies (Alto) - Married Couple]).
+In the lyrics, use tags that include both the singer's name, their voice type, and their relationship context where appropriate (e.g., [Miranda - Soprano], [All - Quartet], [Miranda - Soprano & Annelies - Alto - Married Couple]).
+ALL instructions and tags in the lyrics MUST be in square brackets []. NEVER use parentheses () for instructions.
 Return the result as a JSON object with "title", "style", and "lyrics" fields.
 `;

@@ -14,12 +14,14 @@ import { LogDialog } from './app/components/LogDialog';
 import { HelpDialog } from './app/components/HelpDialog';
 import { GenerateDialog } from './app/components/GenerateDialog';
 import { KaraokeDialog } from './app/components/KaraokeDialog';
+import { ImagePromptsDialog } from './app/components/ImagePromptsDialog';
 import { useNoorApp } from './app/hooks/useNoorApp';
 import { useLogs } from './app/hooks/useLogs';
 import { TextView } from './app/components/TextView';
 import { TreeView } from './app/components/TreeView';
 import { ImageView } from './app/components/ImageView';
 import { MarkdownView } from './app/components/MarkdownView';
+import { SingerDialog } from './app/components/SingerDialog';
 import { X } from 'lucide-react';
 
 export default function App() {
@@ -38,10 +40,15 @@ export default function App() {
     setShowGenerate,
     showKaraoke,
     setShowKaraoke,
+    showImagePrompts,
+    setShowImagePrompts,
+    handleUpdateImagePrompt,
     rating,
     setRating,
     helpContent,
     setHelpContent,
+    selectedSinger,
+    setSelectedSinger,
     handleAction,
     handleGenerate,
     leftLibrary,
@@ -160,6 +167,19 @@ export default function App() {
         onClose={() => setShowKaraoke(false)}
         title={song.title}
         lyrics={song.lyrics}
+      />
+
+      <SingerDialog 
+        isOpen={!!selectedSinger}
+        onClose={() => setSelectedSinger(null)}
+        singer={selectedSinger}
+      />
+
+      <ImagePromptsDialog 
+        isOpen={showImagePrompts}
+        onClose={() => setShowImagePrompts(false)}
+        prompts={song.imagePrompts || { start: '', middle: '', end: '' }}
+        onUpdatePrompt={handleUpdateImagePrompt}
       />
     </div>
   );

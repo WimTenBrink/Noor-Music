@@ -5,17 +5,27 @@ import { useLogs } from './useLogs';
 import { downloadJson } from '../../lib/utils';
 import { GENERATE_PROMPT } from '../../constants/prompts';
 import { SYSTEM_INSTRUCTIONS } from '../../constants/instructions';
+import { SINGERS } from '../../constants/singers';
+import { THE_BAND_MD } from '../../constants/the_band';
+import { SYSTEM_INSTRUCTIONS_MD, MANUAL_MD, CODE_OVERVIEW_MD } from '../../constants/help';
 
 export function useNoorApp() {
-  const [song, setSong] = useState<Song>({ title: '', style: '', lyrics: '' });
+  const [song, setSong] = useState<Song>({ 
+    title: '', 
+    style: '', 
+    lyrics: '',
+    imagePrompts: { start: '', middle: '', end: '' }
+  });
   const [selectedInstruments, setSelectedInstruments] = useState<string[]>([]);
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [activeJob, setActiveJob] = useState<Job | null>(null);
   const [showLogs, setShowLogs] = useState(false);
   const [showGenerate, setShowGenerate] = useState(false);
   const [showKaraoke, setShowKaraoke] = useState(false);
+  const [showImagePrompts, setShowImagePrompts] = useState(false);
   const [rating, setRating] = useState<string>('PG');
   const [helpContent, setHelpContent] = useState<{ title: string; content: string } | null>(null);
+  const [selectedSinger, setSelectedSinger] = useState<{ name: string; photo: string; bioPath: string } | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [leftLibrary, setLeftLibrary] = useState<LibraryItem[]>([]);
   const [rightLibrary, setRightLibrary] = useState<LibraryItem[]>([]);
@@ -26,7 +36,47 @@ export function useNoorApp() {
       // No longer adding JSON files to left library as we have specialized sidebars
       setLeftLibrary([]);
     };
+    
+    const initRight = async () => {
+      const singers = [
+        { name: 'Miranda Noor', base: 'Miranda_Noor' },
+        { name: 'Annelies Brink', base: 'Annelies_Brink' },
+        { name: 'Fannie de Jong', base: 'Fannie_de_Jong' },
+        { name: 'Emma Vermeer', base: 'Emma_Vermeer' },
+      ];
+      
+      const singerItems: LibraryItem[] = [];
+      
+      singers.forEach(s => {
+        // Add Image
+        singerItems.push({
+          id: `singer-img-${s.base}`,
+          name: `${s.name} (Portrait)`,
+          type: 'image',
+          content: `/singers/${s.base}.jpg`,
+          sourceUrl: `/singers/${s.base}.jpg`
+        });
+        
+        // Add Document
+        singerItems.push({
+          id: `singer-doc-${s.base}`,
+          name: `${s.name} (Bio)`,
+          type: 'markdown',
+          content: `/singers/${s.base}.md`,
+          sourceUrl: `/singers/${s.base}.md`
+        });
+      });
+      
+      setRightLibrary(prev => {
+        const existingIds = new Set(prev.map(item => item.id));
+        const newItems = singerItems.filter(item => !existingIds.has(item.id));
+        if (newItems.length === 0) return prev;
+        return [...prev, ...newItems].sort((a, b) => a.name.localeCompare(b.name));
+      });
+    };
+
     initLeft();
+    initRight();
   }, []);
 
   useEffect(() => {
@@ -206,6 +256,9 @@ export function useNoorApp() {
         }
         setShowKaraoke(true);
         break;
+      case 'images':
+        setShowImagePrompts(true);
+        break;
       case 'system-instructions':
       case 'manual':
       case 'code-overview':
@@ -221,6 +274,21 @@ export function useNoorApp() {
       case 'copy':
       case 'paste':
         log('info', 'Edit Action', `Action "${action}" triggered.`);
+        break;
+      case 'singer-miranda':
+        setSelectedSinger(SINGERS[0]);
+        break;
+      case 'singer-annelies':
+        setSelectedSinger(SINGERS[1]);
+        break;
+      case 'singer-fannie':
+        setSelectedSinger(SINGERS[2]);
+        break;
+      case 'singer-emma':
+        setSelectedSinger(SINGERS[3]);
+        break;
+      case 'the-band':
+        setHelpContent({ title: 'The Band', content: THE_BAND_MD });
         break;
     }
   };
@@ -245,6 +313,16 @@ export function useNoorApp() {
     }
   }, [jobs, lastAppliedJobId]);
 
+  const handleUpdateImagePrompt = (key: 'start' | 'middle' | 'end', value: string) => {
+    setSong(prev => ({
+      ...prev,
+      imagePrompts: {
+        ...prev.imagePrompts!,
+        [key]: value
+      }
+    }));
+  };
+
   return {
     song,
     setSong,
@@ -260,10 +338,15 @@ export function useNoorApp() {
     setShowGenerate,
     showKaraoke,
     setShowKaraoke,
+    showImagePrompts,
+    setShowImagePrompts,
+    handleUpdateImagePrompt,
     rating,
     setRating,
     helpContent,
     setHelpContent,
+    selectedSinger,
+    setSelectedSinger,
     handleAction,
     handleGenerate,
     jobs,

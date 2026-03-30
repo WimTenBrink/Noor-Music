@@ -19,18 +19,18 @@ export const TextArea: React.FC<TextAreaProps> = ({ label, ...props }) => {
   return (
     <div className="flex flex-col gap-1 w-full">
       <div className="flex justify-between items-center">
-        {label && <label className="text-xs font-bold text-lavender-accent uppercase tracking-wider">{label}</label>}
+        {label && <label className="text-sm font-bold text-lavender-accent uppercase tracking-wider">{label}</label>}
         <button 
           onClick={handleCopy}
           className="p-1 hover:bg-lavender-surface rounded text-lavender-accent"
           title="Copy to clipboard"
         >
-          {copied ? <Check size={14} /> : <Copy size={14} />}
+          {copied ? <Check size={16} /> : <Copy size={16} />}
         </button>
       </div>
       <textarea 
         {...props}
-        className="w-full bg-lavender-surface border border-lavender-border rounded p-3 text-lavender-text focus:outline-none focus:border-lavender-accent resize-none font-sans"
+        className="w-full bg-lavender-surface border border-lavender-border rounded p-4 text-lg text-lavender-text focus:outline-none focus:border-lavender-accent resize-none font-sans"
       />
     </div>
   );
@@ -50,18 +50,18 @@ export const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement> & { lab
   return (
     <div className="flex flex-col gap-1 w-full">
       <div className="flex justify-between items-center">
-        {label && <label className="text-xs font-bold text-lavender-accent uppercase tracking-wider">{label}</label>}
+        {label && <label className="text-sm font-bold text-lavender-accent uppercase tracking-wider">{label}</label>}
         <button 
           onClick={handleCopy}
           className="p-1 hover:bg-lavender-surface rounded text-lavender-accent"
           title="Copy to clipboard"
         >
-          {copied ? <Check size={14} /> : <Copy size={14} />}
+          {copied ? <Check size={16} /> : <Copy size={16} />}
         </button>
       </div>
       <input 
         {...props}
-        className="w-full bg-lavender-surface border border-lavender-border rounded p-3 text-lavender-text focus:outline-none focus:border-lavender-accent font-sans"
+        className="w-full bg-lavender-surface border border-lavender-border rounded p-4 text-lg text-lavender-text focus:outline-none focus:border-lavender-accent font-sans"
       />
     </div>
   );

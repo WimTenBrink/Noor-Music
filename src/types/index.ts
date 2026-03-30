@@ -21,6 +21,11 @@ export interface Song {
   title: string;
   style: string;
   lyrics: string;
+  imagePrompts?: {
+    start: string;
+    middle: string;
+    end: string;
+  };
 }
 
 export interface Instrument {
@@ -36,7 +41,7 @@ export interface Style {
 export interface LibraryItem {
   id: string;
   name: string;
-  type: 'song' | 'image' | 'xml' | 'json' | 'text';
+  type: 'song' | 'image' | 'xml' | 'json' | 'text' | 'markdown';
   content: any;
   sourceUrl?: string;
 }

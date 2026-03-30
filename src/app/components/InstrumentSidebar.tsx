@@ -33,6 +33,7 @@ export const InstrumentSidebar: React.FC<InstrumentSidebarProps> = ({
       case 'image': return <ImageIcon size={14} />;
       case 'xml': return <FileCode size={14} />;
       case 'json': return <FileJson size={14} />;
+      case 'markdown': return <FileText size={14} />;
       default: return <FileText size={14} />;
     }
   };
@@ -60,20 +61,21 @@ export const InstrumentSidebar: React.FC<InstrumentSidebarProps> = ({
                 <div className="ml-2 space-y-0.5">
                   {group.instruments.map(inst => (
                     <label 
-                      key={inst} 
+                      key={inst.name} 
                       className="flex items-center gap-2 p-1.5 rounded hover:bg-lavender-surface/30 cursor-pointer transition-colors group"
+                      title={inst.description}
                     >
                       <input 
                         type="checkbox" 
-                        checked={selected.includes(inst)}
-                        onChange={() => onToggle(inst)}
+                        checked={selected.includes(inst.name)}
+                        onChange={() => onToggle(inst.name)}
                         className="w-3.5 h-3.5 rounded border-lavender-border text-lavender-accent focus:ring-lavender-accent bg-lavender-bg"
                       />
                       <span className={cn(
                         "text-xs transition-colors",
-                        selected.includes(inst) ? "text-lavender-accent font-bold" : "text-lavender-text/70"
+                        selected.includes(inst.name) ? "text-lavender-accent font-bold" : "text-lavender-text/70"
                       )}>
-                        {inst}
+                        {inst.name}
                       </span>
                     </label>
                   ))}

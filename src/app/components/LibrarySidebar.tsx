@@ -18,6 +18,7 @@ export const LibrarySidebar: React.FC<LibrarySidebarProps> = ({ title, items, on
       case 'image': return <ImageIcon size={14} />;
       case 'xml': return <FileCode size={14} />;
       case 'json': return <FileJson size={14} />;
+      case 'markdown': return <FileText size={14} />;
       default: return <FileText size={14} />;
     }
   };

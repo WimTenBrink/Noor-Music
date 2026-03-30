@@ -1,23 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Download, Copy, Check } from 'lucide-react';
+import { SINGERS } from '../../constants/singers';
 
 interface MarkdownViewProps {
   content: string;
+  children?: React.ReactNode;
 }
 
-export const MarkdownView: React.FC<MarkdownViewProps> = ({ content }) => {
+const calculateAge = (birthDate: string) => {
+  const today = new Date('2026-03-30'); // Fixed current date as per context
+  const birth = new Date(birthDate);
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+  return age;
+};
+
+export const MarkdownView: React.FC<MarkdownViewProps> = ({ content, children }) => {
   const [copied, setCopied] = useState(false);
 
+  const processedContent = useMemo(() => {
+    let result = content;
+    SINGERS.forEach(singer => {
+      const age = calculateAge(singer.birthDate);
+      const placeholder = `{${singer.id}-age}`;
+      result = result.replaceAll(placeholder, age.toString());
+    });
+    return result;
+  }, [content]);
+
   const handleCopy = () => {
-    navigator.clipboard.writeText(content);
+    navigator.clipboard.writeText(processedContent);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleDownload = (format: 'md' | 'pdf') => {
     if (format === 'md') {
-      const blob = new Blob([content], { type: 'text/markdown' });
+      const blob = new Blob([processedContent], { type: 'text/markdown' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -38,7 +61,8 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({ content }) => {
         <button onClick={() => handleDownload('pdf')} className="p-2 hover:bg-lavender-surface rounded font-bold text-xs">PDF</button>
       </div>
       <div className="flex-1 overflow-auto p-6 markdown-body">
-        <ReactMarkdown>{content}</ReactMarkdown>
+        {children}
+        <ReactMarkdown>{processedContent}</ReactMarkdown>
       </div>
     </div>
   );

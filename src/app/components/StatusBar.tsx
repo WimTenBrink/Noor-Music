@@ -62,14 +62,14 @@ export const StatusBar: React.FC<{ onShowJob: (job: Job) => void }> = ({ onShowJ
   };
 
   return (
-    <div className="h-10 border-t border-lavender-border bg-lavender-bg flex items-center justify-between px-4 text-xs z-40">
+    <div className="h-10 border-t border-lavender-border bg-lavender-bg flex items-center justify-between px-4 text-sm z-40">
       <div className="flex items-center gap-4">
         <button 
           onClick={() => isPaused ? resume() : pause()}
           className={cn("p-1.5 rounded transition-colors", isPaused ? "bg-yellow-500/20 text-yellow-500" : "bg-blue-500/20 text-blue-500")}
           title={isPaused ? "Resume Jobs" : "Pause Jobs"}
         >
-          {isPaused ? <Play size={14} fill="currentColor" /> : <Pause size={14} fill="currentColor" />}
+          {isPaused ? <Play size={16} fill="currentColor" /> : <Pause size={16} fill="currentColor" />}
         </button>
 
         <div className="flex gap-2">

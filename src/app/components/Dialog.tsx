@@ -37,7 +37,7 @@ export const Dialog: React.FC<DialogProps> = ({
           className="bg-lavender-bg border border-lavender-border rounded-lg shadow-2xl flex flex-col max-w-[95vw] max-h-[95vh]"
         >
           <div className="flex items-center justify-between p-4 border-b border-lavender-border">
-            <h2 className="text-xl font-bold text-lavender-accent">{title}</h2>
+            <h2 className="text-2xl font-bold text-lavender-accent">{title}</h2>
             <div className="flex items-center gap-4">
               {onConfirm && (
                 <button 
