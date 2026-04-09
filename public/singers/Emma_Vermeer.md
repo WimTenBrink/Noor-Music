@@ -64,7 +64,7 @@ A {emma-age}-year-old Human Female
 ## Skills
 
 - Keyboard and Synthesizers
-- backup vocals (Yodeling, wide range)
+- Female Baritone - Bluesy, Contralto, resonant chest voice, Off-beat, Velvety, Melancholy
 - fashion and styling
 - photography
 - dancing (ballet, modern)

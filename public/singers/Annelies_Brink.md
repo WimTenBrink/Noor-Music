@@ -63,7 +63,7 @@ A {annelies-age}-year-old Human Female
 
 - graphic design
 - digital illustration
-- Low-tone singing and "Demonic" vocalization
+- Female Alto - Choral, Alt-Rock, raspy husky tone, Deep, Low-mid focused, Gravelly, Haunting
 - Dutch cooking
 - cycling
 - photography

@@ -64,7 +64,7 @@ A {fannie-age}-year-old Human Female
 ## Skills
 
 - Drums and Percussion
-- Rap and Scat singing (high-speed)
+- Female Mezzo-Soprano - Soulful, Rap, wide dramatic vibrato, Controlled, Syncopated, Staccato
 - Video Gaming
 - Skateboarding
 - Digital Art

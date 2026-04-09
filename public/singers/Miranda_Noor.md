@@ -65,7 +65,7 @@ A {miranda-age}-year-old Mixed Race (Indian, Dutch, American) Female
 
 - bass guitar
 - songwriting
-- Opera and high-note singing
+- Female Soprano - Ethereal, operatic, High-pitched, High-register, Angelic, Shimmering
 - multilingual (English, Dutch, Hindi)
 - creative writing
 - cooking
