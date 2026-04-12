@@ -17,6 +17,25 @@ export interface Job {
   systemInstruction?: string;
 }
 
+export interface StoryPrompts {
+  miranda: { wan: string; sdxl: string };
+  annelies: { wan: string; sdxl: string };
+  fannie: { wan: string; sdxl: string };
+  emma: { wan: string; sdxl: string };
+  mirandaAnnelies: { wan: string; sdxl: string };
+  fannieEmma: { wan: string; sdxl: string };
+  group: { wan: string; sdxl: string };
+}
+
+export interface PortraitPrompts {
+  miranda: { wan: string; sdxl: string };
+  annelies: { wan: string; sdxl: string };
+  fannie: { wan: string; sdxl: string };
+  emma: { wan: string; sdxl: string };
+}
+
+export type PortraitType = 'Face' | 'Torso' | 'Body';
+
 export interface Song {
   title: string;
   style: string;
@@ -26,6 +45,8 @@ export interface Song {
     middle: string;
     end: string;
   };
+  story?: string;
+  storyPrompts?: StoryPrompts;
 }
 
 export interface Instrument {

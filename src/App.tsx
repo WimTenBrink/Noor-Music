@@ -22,6 +22,8 @@ import { TreeView } from './app/components/TreeView';
 import { ImageView } from './app/components/ImageView';
 import { MarkdownView } from './app/components/MarkdownView';
 import { SingerDialog } from './app/components/SingerDialog';
+import { StoryDialog } from './app/components/StoryDialog';
+import { PortraitDialog } from './app/components/PortraitDialog';
 import { X } from 'lucide-react';
 
 export default function App() {
@@ -42,7 +44,15 @@ export default function App() {
     setShowKaraoke,
     showImagePrompts,
     setShowImagePrompts,
+    showStory,
+    setShowStory,
+    showPortrait,
+    setShowPortrait,
+    activePortraitType,
+    portraitPrompts,
+    handleGeneratePortraits,
     handleUpdateImagePrompt,
+    handleGenerateStoryPrompts,
     rating,
     setRating,
     helpContent,
@@ -151,6 +161,7 @@ export default function App() {
           onClose={() => setHelpContent(null)} 
           title={helpContent.title} 
           content={helpContent.content} 
+          filename={helpContent.filename}
         />
       )}
 
@@ -180,6 +191,32 @@ export default function App() {
         onClose={() => setShowImagePrompts(false)}
         prompts={song.imagePrompts || { start: '', middle: '', end: '' }}
         onUpdatePrompt={handleUpdateImagePrompt}
+      />
+
+      <StoryDialog
+        isOpen={showStory}
+        onClose={() => setShowStory(false)}
+        story={song.story || ''}
+        prompts={song.storyPrompts || {
+          miranda: { wan: '', sdxl: '' },
+          annelies: { wan: '', sdxl: '' },
+          fannie: { wan: '', sdxl: '' },
+          emma: { wan: '', sdxl: '' },
+          mirandaAnnelies: { wan: '', sdxl: '' },
+          fannieEmma: { wan: '', sdxl: '' },
+          group: { wan: '', sdxl: '' }
+        }}
+        onGenerate={handleGenerateStoryPrompts}
+        onUpdateStory={(story) => setSong(prev => ({ ...prev, story }))}
+        songTitle={song.title || 'Untitled Song'}
+      />
+
+      <PortraitDialog
+        isOpen={showPortrait}
+        onClose={() => setShowPortrait(false)}
+        type={activePortraitType}
+        prompts={portraitPrompts[activePortraitType]}
+        onRegenerate={handleGeneratePortraits}
       />
     </div>
   );

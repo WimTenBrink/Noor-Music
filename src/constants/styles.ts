@@ -16,13 +16,48 @@ export const STYLES = [
     type: "Rock",
     substyles: [
       { name: "Alternative Rock", description: "A genre of rock music that emerged from the independent music underground of the 1970s." },
+      { name: "Hard Rock", description: "A subgenre of rock music that began in the mid-1960s, characterized by a heavy use of aggressive vocals, distorted electric guitars, bass guitar, and drums." },
+      { name: "Glam Rock", description: "A style of rock music that developed in the United Kingdom in the early 1970s, performed by musicians who wore outrageous costumes, makeup, and hairstyles." },
       { name: "Art Rock", description: "A subgenre of rock music that reflects a challenging or avant-garde approach to rock." },
       { name: "Post-Rock", description: "A form of experimental rock characterized by the use of musical instruments commonly associated with rock, but using rhythms, harmonies, melodies, chord progressions, and coloring that are not traditionally found in rock." },
       { name: "Psychedelic Rock", description: "A rock music genre that is inspired, influenced, or representative of psychedelic culture." },
       { name: "Indie Rock", description: "A genre of alternative rock that originated in the United States and United Kingdom in the 1970s." },
       { name: "Shoegaze", description: "A subgenre of indie and alternative rock characterized by its ethereal mixture of obscured vocals, guitar distortion and effects, feedback, and overwhelming volume." },
       { name: "Gothic Rock", description: "A style of rock music that emerged from post-punk in the late 1970s." },
-      { name: "Punk Rock", description: "A rock music genre that emerged in the mid-1970s." }
+      { name: "Punk Rock", description: "A rock music genre that emerged in the mid-1970s." },
+      { name: "Noise Rock", description: "A style of experimental rock that emerged in the 1980s, characterized by the use of noise, feedback, and unconventional song structures." }
+    ]
+  },
+  {
+    type: "Uncommon & Weird",
+    substyles: [
+      { name: "Twee Pop", description: "A subgenre of indie pop that originated in the United Kingdom in the mid-1980s, characterized by its simple, melodic, and often innocent sound." },
+      { name: "Wonky", description: "A genre of electronic music characterized by its unstable, off-kilter rhythms and synth sounds." },
+      { name: "Danger Music", description: "An experimental form of 20th-century avant-garde music and performance art based on the concept that some pieces of music can or will harm the listener or the performer." },
+      { name: "Extratone", description: "A subgenre of speedcore with a tempo of at least 1,000 beats per minute (BPM)." },
+      { name: "Lowercase", description: "An extreme form of minimalist improvisational avant-garde music characterized by very quiet sounds, often amplified." },
+      { name: "Black MIDI", description: "A music genre consisting of compositions that use MIDI files to create a song containing a large number of notes, typically in the millions or billions." },
+      { name: "Bardcore", description: "A musical genre that consists of medieval-style covers of popular songs." },
+      { name: "Seapunk", description: "A subculture and music genre that originated on Tumblr in 2011, characterized by a nautical-themed aesthetic and electronic music." }
+    ]
+  },
+  {
+    type: "Hip Hop & R&B",
+    substyles: [
+      { name: "90s Hip Hop", description: "A golden era of hip hop characterized by boom bap beats and lyrical storytelling." },
+      { name: "Trap", description: "A subgenre of hip hop that originated in the Southern United States during the early 2000s." },
+      { name: "Contemporary R&B", description: "A music genre that combines rhythm and blues with elements of pop, soul, funk, hip hop and electronic music." },
+      { name: "Neo Soul", description: "A genre of popular music that emerged from soul and contemporary R&B." },
+      { name: "Cloud Rap", description: "A subgenre of hip hop music characterized by its ethereal, dreamlike production." }
+    ]
+  },
+  {
+    type: "Country & Americana",
+    substyles: [
+      { name: "Outlaw Country", description: "A subgenre of American country music that became popular during the late 1960s and 1970s." },
+      { name: "Bluegrass", description: "A genre of American roots music that developed in the 1940s in the United States' Appalachian region." },
+      { name: "Alt-Country", description: "A loosely defined subgenre of country music that includes acts that differ significantly in style from mainstream or commercial country music." },
+      { name: "Southern Gothic", description: "A subgenre of Americana that incorporates dark, atmospheric themes and storytelling." }
     ]
   },
   {

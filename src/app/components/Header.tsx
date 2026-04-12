@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NoorLogo } from './NoorLogo';
-import { FileText, Edit, Settings, HelpCircle, ChevronDown, Wand2, Terminal, Mic2, ImageIcon } from 'lucide-react';
+import { FileText, Edit, Settings, HelpCircle, ChevronDown, Wand2, Terminal, Mic2, ImageIcon, BookOpen } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 interface HeaderProps {
@@ -53,6 +53,9 @@ export const Header: React.FC<HeaderProps> = ({ onAction, onGenerate, onShowLogs
         { id: 'singer-annelies', label: 'Annelies Brink' },
         { id: 'singer-fannie', label: 'Fannie de Jong' },
         { id: 'singer-emma', label: 'Emma Vermeer' },
+        { id: 'singer-face', label: 'Face' },
+        { id: 'singer-torso', label: 'Torso' },
+        { id: 'singer-body', label: 'Body' },
       ]
     },
     {
@@ -135,6 +138,13 @@ export const Header: React.FC<HeaderProps> = ({ onAction, onGenerate, onShowLogs
           </select>
         </div>
 
+        <button 
+          onClick={() => onAction('story')}
+          className="flex items-center gap-2 px-4 py-2 border border-lavender-accent/50 text-lavender-accent/80 font-bold rounded-full hover:bg-lavender-accent hover:text-lavender-bg transition-all"
+        >
+          <BookOpen size={18} />
+          Story
+        </button>
         <button 
           onClick={() => onAction('images')}
           className="flex items-center gap-2 px-4 py-2 border border-lavender-accent/50 text-lavender-accent/80 font-bold rounded-full hover:bg-lavender-accent hover:text-lavender-bg transition-all"

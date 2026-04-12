@@ -7,10 +7,11 @@ interface HelpDialogProps {
   onClose: () => void;
   title: string;
   content: string;
+  filename?: string;
 }
 
-export const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onClose, title, content }) => (
+export const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onClose, title, content, filename }) => (
   <Dialog isOpen={isOpen} onClose={onClose} title={title} size="full">
-    <MarkdownView content={content} />
+    <MarkdownView content={content} filename={filename || title} />
   </Dialog>
 );

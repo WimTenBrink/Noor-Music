@@ -49,7 +49,10 @@ export const SingerDialog: React.FC<SingerDialogProps> = ({ isOpen, onClose, sin
           </div>
         ) : (
           <div className="max-w-4xl mx-auto h-full">
-            <MarkdownView content={bio}>
+            <MarkdownView 
+              content={bio} 
+              filename={singer.bioPath.split('/').pop()?.replace('.md', '') || singer.name}
+            >
               <img 
                 src={singer.photo} 
                 alt={singer.name} 

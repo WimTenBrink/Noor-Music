@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Song, Job, LibraryItem } from '../../types';
+import { Song, Job, LibraryItem, PortraitPrompts, PortraitType } from '../../types';
 import { useJobQueue } from './useJobQueue';
 import { useLogs } from './useLogs';
 import { downloadJson } from '../../lib/utils';
@@ -14,7 +14,17 @@ export function useNoorApp() {
     title: '', 
     style: '', 
     lyrics: '',
-    imagePrompts: { start: '', middle: '', end: '' }
+    imagePrompts: { start: '', middle: '', end: '' },
+    story: '',
+    storyPrompts: {
+      miranda: { wan: '', sdxl: '' },
+      annelies: { wan: '', sdxl: '' },
+      fannie: { wan: '', sdxl: '' },
+      emma: { wan: '', sdxl: '' },
+      mirandaAnnelies: { wan: '', sdxl: '' },
+      fannieEmma: { wan: '', sdxl: '' },
+      group: { wan: '', sdxl: '' }
+    }
   });
   const [selectedInstruments, setSelectedInstruments] = useState<string[]>([]);
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
@@ -23,8 +33,22 @@ export function useNoorApp() {
   const [showGenerate, setShowGenerate] = useState(false);
   const [showKaraoke, setShowKaraoke] = useState(false);
   const [showImagePrompts, setShowImagePrompts] = useState(false);
+  const [showStory, setShowStory] = useState(false);
+  const [showPortrait, setShowPortrait] = useState(false);
+  const [activePortraitType, setActivePortraitType] = useState<PortraitType>('Face');
+  const [portraitPrompts, setPortraitPrompts] = useState<Record<PortraitType, PortraitPrompts>>(() => {
+    const saved = localStorage.getItem('noor-portrait-prompts');
+    if (saved) return JSON.parse(saved);
+    const empty = { wan: '', sdxl: '' };
+    const emptyPrompts = { miranda: { ...empty }, annelies: { ...empty }, fannie: { ...empty }, emma: { ...empty } };
+    return {
+      Face: { ...emptyPrompts },
+      Torso: { ...emptyPrompts },
+      Body: { ...emptyPrompts }
+    };
+  });
   const [rating, setRating] = useState<string>('PG');
-  const [helpContent, setHelpContent] = useState<{ title: string; content: string } | null>(null);
+  const [helpContent, setHelpContent] = useState<{ title: string; content: string; filename?: string } | null>(null);
   const [selectedSinger, setSelectedSinger] = useState<{ name: string; photo: string; bioPath: string } | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [leftLibrary, setLeftLibrary] = useState<LibraryItem[]>([]);
@@ -114,10 +138,82 @@ export function useNoorApp() {
   }, [selectedInstruments, selectedStyles]);
 
   const handleGenerate = (instructions: string) => {
-    const prompt = GENERATE_PROMPT(instructions, selectedInstruments, selectedStyles, rating);
+    const prompt = GENERATE_PROMPT(instructions, selectedInstruments, selectedStyles, rating, !!song.story);
     const jobId = addJob(`Generate: ${instructions.substring(0, 20)}...`, 'normal', prompt, apiKey || '');
     log('info', 'Job Added', `New generation job added: ${jobId} (Rating: ${rating})`);
     setShowGenerate(false);
+  };
+
+  const handleGenerateStoryPrompts = (story: string, noClothes: boolean) => {
+    const prompt = `Based on the following story, generate image prompts for the band Noor (Miranda, Annelies, Fannie, Emma).
+    
+    Story: ${story}
+    No Clothes: ${noClothes ? 'Yes (generate prompts without any clothing)' : 'No'}
+    
+    For each category, provide:
+    1. A WAN prompt: A detailed description of the person(s) body, followed by a description of the environment, and finally the clothes they are wearing (unless No Clothes is Yes).
+       **CRITICAL:** WAN prompts MUST be sanitized to contain no offensive or explicit words (e.g., avoid 'nude', 'no clothes', 'sensual', 'naked'). Use artistic and safe alternatives for WAN (e.g., 'natural state', 'unadorned', 'minimalist').
+    2. An SDXL prompt: A weighted version of the WAN prompt (using (keyword:weight) syntax). SDXL prompts CAN be explicit and detailed.
+    
+    Categories:
+    - miranda: Single person
+    - annelies: Single person
+    - fannie: Single person
+    - emma: Single person
+    - mirandaAnnelies: Couple (Miranda and Annelies)
+    - fannieEmma: Couple (Fannie and Emma)
+    - group: All four singers
+    
+    **Clear Identification:** For prompts with two or more characters, clearly mark each person by name and specific physical traits to prevent the AI from mixing them up.
+    
+    Return the result as a JSON object matching the StoryPrompts interface:
+    {
+      "miranda": { "wan": "...", "sdxl": "..." },
+      "annelies": { "wan": "...", "sdxl": "..." },
+      "fannie": { "wan": "...", "sdxl": "..." },
+      "emma": { "wan": "...", "sdxl": "..." },
+      "mirandaAnnelies": { "wan": "...", "sdxl": "..." },
+      "fannieEmma": { "wan": "...", "sdxl": "..." },
+      "group": { "wan": "...", "sdxl": "..." }
+    }
+    `;
+    
+    const jobId = addJob(`Generate Story Prompts`, 'high', prompt, apiKey || '');
+    log('info', 'Story Job Added', `New story prompt generation job added: ${jobId}`);
+  };
+
+  useEffect(() => {
+    localStorage.setItem('noor-portrait-prompts', JSON.stringify(portraitPrompts));
+  }, [portraitPrompts]);
+
+  const handleGeneratePortraits = (type: PortraitType) => {
+    const prompt = `Generate portrait image prompts for the four singers of the band Noor (Miranda, Annelies, Fannie, Emma).
+    
+    Portrait Type: ${type}
+    
+    Constraints for all prompts:
+    - The singer is standing facing the viewer in a relaxed pose.
+    - A slight smile on her face.
+    - Generate an interesting, natural background (e.g., forest, beach, garden, mountains).
+    - WAN prompts: Detailed description of the singer's body and face, including clothing. **CRITICAL:** Do NOT mention cup size or use explicit words in WAN prompts.
+    - SDXL prompts: Weighted version of the WAN prompt, but WITHOUT clothing (explicit and detailed body description).
+    
+    Specific Type Instructions:
+    - Face: Focus ONLY on facial details (eyes, hair, skin texture, expression).
+    - Torso: Describe the body from above the hip upwards. Include more body details.
+    - Body: Describe the whole body from head to toe in detail.
+    
+    Return the result as a JSON object matching the PortraitPrompts interface:
+    {
+      "miranda": { "wan": "...", "sdxl": "..." },
+      "annelies": { "wan": "...", "sdxl": "..." },
+      "fannie": { "wan": "...", "sdxl": "..." },
+      "emma": { "wan": "...", "sdxl": "..." }
+    }
+    `;
+    
+    const jobId = addJob(`Generate ${type} Portraits`, 'high', prompt, apiKey || '');
+    log('info', 'Portrait Job Added', `New ${type} portrait generation job added: ${jobId}`);
   };
 
   const addToLibrary = (item: LibraryItem, side: 'left' | 'right') => {
@@ -259,14 +355,17 @@ export function useNoorApp() {
       case 'images':
         setShowImagePrompts(true);
         break;
+      case 'story':
+        setShowStory(true);
+        break;
       case 'system-instructions':
       case 'manual':
       case 'code-overview':
         const { SYSTEM_INSTRUCTIONS_MD, MANUAL_MD, CODE_OVERVIEW_MD } = await import('../../constants/help');
         const contentMap: any = {
-          'system-instructions': { title: 'System Instructions', content: SYSTEM_INSTRUCTIONS_MD },
-          'manual': { title: 'User Manual', content: MANUAL_MD },
-          'code-overview': { title: 'Code Overview', content: CODE_OVERVIEW_MD },
+          'system-instructions': { title: 'System Instructions', content: SYSTEM_INSTRUCTIONS_MD, filename: 'system_instructions' },
+          'manual': { title: 'User Manual', content: MANUAL_MD, filename: 'manual' },
+          'code-overview': { title: 'Code Overview', content: CODE_OVERVIEW_MD, filename: 'code_overview' },
         };
         setHelpContent(contentMap[action]);
         break;
@@ -287,8 +386,20 @@ export function useNoorApp() {
       case 'singer-emma':
         setSelectedSinger(SINGERS[3]);
         break;
+      case 'singer-face':
+        setActivePortraitType('Face');
+        setShowPortrait(true);
+        break;
+      case 'singer-torso':
+        setActivePortraitType('Torso');
+        setShowPortrait(true);
+        break;
+      case 'singer-body':
+        setActivePortraitType('Body');
+        setShowPortrait(true);
+        break;
       case 'the-band':
-        setHelpContent({ title: 'The Band', content: THE_BAND_MD });
+        setHelpContent({ title: 'The Band', content: THE_BAND_MD, filename: 'noor' });
         break;
     }
   };
@@ -299,17 +410,43 @@ export function useNoorApp() {
   useEffect(() => {
     const lastDoneJob = [...jobs].reverse().find(j => j.status === 'done' && j.result && !j.error);
     if (lastDoneJob && lastDoneJob.id !== lastAppliedJobId) {
-      setSong(lastDoneJob.result);
+      const result = lastDoneJob.result;
+      
+      // If it's a story generation job, we might only have storyPrompts
+      if (result.miranda && result.annelies) {
+        if (lastDoneJob.name.includes('Portraits')) {
+          const type = lastDoneJob.name.split(' ')[1] as PortraitType;
+          setPortraitPrompts(prev => ({
+            ...prev,
+            [type]: result
+          }));
+          log('info', 'Portraits Updated', `${type} portraits have been updated.`);
+        } else {
+          setSong(prev => ({
+            ...prev,
+            storyPrompts: result
+          }));
+        }
+      } else {
+        // Regular song generation (which might now include story/storyPrompts)
+        setSong(prev => ({
+          ...prev,
+          ...result
+        }));
+      }
+      
       setLastAppliedJobId(lastDoneJob.id);
       
-      // Also add to right library
-      const item: LibraryItem = {
-        id: lastDoneJob.id,
-        name: lastDoneJob.result.title || 'Untitled Song',
-        type: 'song',
-        content: lastDoneJob.result,
-      };
-      addToLibrary(item, 'right');
+      // Also add to right library if it's a song
+      if (result.title && result.lyrics) {
+        const item: LibraryItem = {
+          id: lastDoneJob.id,
+          name: result.title || 'Untitled Song',
+          type: 'song',
+          content: result,
+        };
+        addToLibrary(item, 'right');
+      }
     }
   }, [jobs, lastAppliedJobId]);
 
@@ -340,7 +477,15 @@ export function useNoorApp() {
     setShowKaraoke,
     showImagePrompts,
     setShowImagePrompts,
+    showStory,
+    setShowStory,
+    showPortrait,
+    setShowPortrait,
+    activePortraitType,
+    portraitPrompts,
+    handleGeneratePortraits,
     handleUpdateImagePrompt,
+    handleGenerateStoryPrompts,
     rating,
     setRating,
     helpContent,

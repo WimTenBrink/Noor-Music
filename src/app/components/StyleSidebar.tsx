@@ -84,42 +84,6 @@ export const StyleSidebar: React.FC<StyleSidebarProps> = ({
             </div>
           ))}
         </div>
-
-        {/* Library Items Section */}
-        {items.length > 0 && (
-          <div className="pt-4 border-t border-lavender-border/30">
-            <h4 className="text-[10px] font-bold text-lavender-text/40 uppercase tracking-widest mb-2 px-2">Project Content</h4>
-            <div className="flex flex-col gap-1">
-              {items.map(item => (
-                <div 
-                  key={item.id} 
-                  className="group flex items-center justify-between p-2 rounded hover:bg-lavender-surface/50 transition-colors"
-                >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <div className="text-lavender-accent/50">{getItemIcon(item.type)}</div>
-                    <span className="text-xs truncate font-medium">{item.name}</span>
-                  </div>
-                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button 
-                      onClick={() => onView(item)}
-                      className="p-1 hover:bg-lavender-accent hover:text-lavender-bg rounded text-lavender-accent transition-colors"
-                      title="View"
-                    >
-                      <Eye size={14} />
-                    </button>
-                    <button 
-                      onClick={() => onDelete(item.id)}
-                      className="p-1 hover:bg-red-500 hover:text-white rounded text-red-400 transition-colors"
-                      title="Delete"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </aside>
   );

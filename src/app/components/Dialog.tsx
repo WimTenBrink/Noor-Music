@@ -39,17 +39,17 @@ export const Dialog: React.FC<DialogProps> = ({
           <div className="flex items-center justify-between p-4 border-b border-lavender-border">
             <h2 className="text-2xl font-bold text-lavender-accent">{title}</h2>
             <div className="flex items-center gap-4">
-              {onConfirm && (
-                <button 
-                  onClick={onConfirm}
-                  className="p-1 text-green-500 hover:bg-green-500/10 rounded"
-                >
-                  <Check size={24} />
-                </button>
-              )}
+              <button 
+                onClick={onConfirm || onClose}
+                className="p-1 text-green-500 hover:bg-green-500/10 rounded"
+                title="OK"
+              >
+                <Check size={24} />
+              </button>
               <button 
                 onClick={onClose}
                 className="p-1 text-red-500 hover:bg-red-500/10 rounded"
+                title="Cancel"
               >
                 <X size={24} />
               </button>

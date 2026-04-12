@@ -25,6 +25,24 @@ Return a JSON object with:
 - style: A comma-separated list of styles and instruments for SUNO. You MUST always include the phrase "Female vocal quartet (Soprano, Alto, Mezzo-Soprano, Feminine Baritone)" at the beginning of this list. You may adjust or refine the style list if it fits the song's mood better, but keep the core quartet and selected instruments.
 - lyrics: The song lyrics. Use [Verse], [Chorus], [Bridge], [Outro] tags. Indicate who sings what with their name, voice type, and the specific voice parameters defined for them (e.g., [Miranda - Female Soprano - Ethereal, operatic], [Annelies - Female Alto - Raspy husky tone], [Emma - Female Baritone - Bluesy, Contralto]). Include relationship details where appropriate (e.g., [Miranda & Annelies - Married Couple]).
 - imagePrompts: A JSON object with "start", "middle", and "end" fields, each containing a unique prompt for WAN image generation.
+- story: A short story (about 200 words) based on the lyrics that can be used for image generation.
+- storyPrompts: A JSON object with "miranda", "annelies", "fannie", "emma", "mirandaAnnelies", "fannieEmma", and "group" fields. Each field contains:
+  - wan: A detailed description of the person(s) body, followed by a description of the environment, and finally the clothes they are wearing. **WAN SANITIZATION:** WAN prompts MUST be sanitized to contain no offensive or explicit words (e.g., avoid 'nude', 'no clothes', 'sensual', 'naked'). Use artistic and safe alternatives for WAN (e.g., 'natural state', 'unadorned', 'minimalist').
+  - sdxl: A weighted version of the WAN prompt (using (keyword:weight) syntax). SDXL prompts CAN be explicit and detailed.
+  - **STORY PROMPT CONSTRAINTS:**
+    - **Single Person Prompts:** "miranda", "annelies", "fannie", "emma" MUST only feature a **single person**.
+    - **Couple Prompts:** "mirandaAnnelies" (Miranda and Annelies - Married Couple) and "fannieEmma" (Fannie and Emma - Lovers) MUST feature **two people**.
+    - **Group Prompt:** "group" MUST feature **all four singers** together.
+    - **Clear Identification:** For prompts with two or more characters, clearly mark each person by name and specific physical traits (hair color, eye color, ethnicity) to prevent the AI from mixing them up or merging their features.
+    - **Physicality First:** Start with a detailed description of the person(s) body (ethnicity, skin tone, eyes, hair, fitness, small cup size).
+    - **Environment:** Follow with a description of the setting and atmosphere.
+    - **Clothing:** End with a description of their specific outfit (unless "No Clothes" is requested).
+    - **Barefoot:** All singers MUST be BAREFOOT in every prompt.
+    - **Miranda:** Mixed Race (Indian, Dutch, American), warm olive skin, dark hazel eyes, espresso black wavy hair.
+    - **Annelies:** Caucasian (Dutch), fair skin, blue almond-shaped eyes, chestnut brown hair.
+    - **Fannie:** Caucasian (Dutch), fair skin with freckles, bright blue eyes, wearing glasses, sun-kissed blonde hair in a high ponytail.
+    - **Emma:** Caucasian (Dutch), porcelain fair skin, captivating light green eyes, reddish-brown hair. Tall and statuesque.
+- imagePrompts details:
   - The first prompt must be of the band singing the start of the song.
   - The second prompt is for the middle of the song.
   - The third prompt is for the song's ending.
@@ -41,6 +59,7 @@ Return a JSON object with:
   - Describe the scene, lighting, and mood based on the lyrics. Do NOT mention the 9:16 aspect ratio in the prompt text.
 
 Guidelines:
+- **Missing Selections:** If the user has not selected any instruments or styles, you MUST pick appropriate ones that fit the song's theme and the band's persona before creating the lyrics. Ensure you include at least one ancient instrument.
 - **Vocal Styles:** You will be provided with a list of "Instruments". Some of these are actually "Vocal Styles" (e.g., Opera, Deep Voice, Rap, Scat, Yodeling, Beatboxing, Whispering, Growling, Falsetto, Vibrato, Throat Singing, Screaming, Melismatic, Sprechgesang).
 - **CRITICAL:** You MUST ONLY use these specific vocal styles if they are explicitly listed in the "Instruments" section of the prompt. If a vocal style is NOT in the list, the singers MUST sing in their "normal" voice as described in their persona.
 - **Indicate Vocal Style & Gender:** When a singer uses one of the selected vocal styles, indicate it in the tag. **CRITICAL:** ALWAYS explicitly mention the gender of the singer(s) in the tags (e.g., [Miranda - Female Soprano - Opera], [Fannie - Female Mezzo-Soprano - Rap], [All - Female Quartet]) to ensure SUNO uses female voices.

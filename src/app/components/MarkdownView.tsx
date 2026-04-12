@@ -6,6 +6,7 @@ import { SINGERS } from '../../constants/singers';
 interface MarkdownViewProps {
   content: string;
   children?: React.ReactNode;
+  filename?: string;
 }
 
 const calculateAge = (birthDate: string) => {
@@ -19,7 +20,7 @@ const calculateAge = (birthDate: string) => {
   return age;
 };
 
-export const MarkdownView: React.FC<MarkdownViewProps> = ({ content, children }) => {
+export const MarkdownView: React.FC<MarkdownViewProps> = ({ content, children, filename = 'document' }) => {
   const [copied, setCopied] = useState(false);
 
   const processedContent = useMemo(() => {
@@ -44,7 +45,7 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({ content, children })
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'document.md';
+      a.download = `${filename.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.md`;
       a.click();
     } else {
       window.print(); // Simple PDF export via print
