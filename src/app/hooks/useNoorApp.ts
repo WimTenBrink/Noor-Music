@@ -132,7 +132,7 @@ export function useNoorApp() {
   };
 
   useEffect(() => {
-    const quartet = "Female vocal quartet (Soprano, Alto, Mezzo-Soprano, Feminine Baritone)";
+    const quartet = "Female vocal quartet (Soprano, Alto, Mezzo-Soprano, Feminine Contralto)";
     const combined = [quartet, ...selectedStyles, ...selectedInstruments].join(', ');
     setSong(prev => ({ ...prev, style: combined }));
   }, [selectedInstruments, selectedStyles]);
@@ -152,8 +152,8 @@ export function useNoorApp() {
     
     For each category, provide:
     1. A WAN prompt: A detailed description of the person(s) body, followed by a description of the environment, and finally the clothes they are wearing (unless No Clothes is Yes).
-       **CRITICAL:** WAN prompts MUST be sanitized to contain no offensive or explicit words (e.g., avoid 'nude', 'no clothes', 'sensual', 'naked'). Use artistic and safe alternatives for WAN (e.g., 'natural state', 'unadorned', 'minimalist').
-    2. An SDXL prompt: A weighted version of the WAN prompt (using (keyword:weight) syntax). SDXL prompts CAN be explicit and detailed.
+       **CRITICAL:** WAN prompts MUST be sanitized to contain no offensive or explicit words (e.g., avoid 'nude', 'no clothes', 'sensual', 'naked'). Use artistic and safe alternatives for WAN (e.g., 'natural state', 'unadorned', 'minimalist'). **Do NOT mention cup sizes in WAN prompts.**
+    2. An SDXL prompt: A weighted version of the WAN prompt (using (keyword:weight) syntax). SDXL prompts CAN be explicit, detailed, and include nudity or erotic themes. **CRITICAL:** ALWAYS include chest size with cup size in SDXL prompts (e.g., "(flat chest:1.3)", "(AA cup:1.2)").
     
     Categories:
     - miranda: Single person
@@ -195,8 +195,8 @@ export function useNoorApp() {
     - The singer is standing facing the viewer in a relaxed pose.
     - A slight smile on her face.
     - Generate an interesting, natural background (e.g., forest, beach, garden, mountains).
-    - WAN prompts: Detailed description of the singer's body and face, including clothing. **CRITICAL:** Do NOT mention cup size or use explicit words in WAN prompts.
-    - SDXL prompts: Weighted version of the WAN prompt, but WITHOUT clothing (explicit and detailed body description).
+    - WAN prompts: Detailed description of the singer's body and face, including clothing. **CRITICAL:** WAN prompts MUST be sanitized to contain no offensive or explicit words. Do NOT mention cup sizes in WAN prompts.
+    - SDXL prompts: Weighted version of the WAN prompt, but WITHOUT clothing (explicit and detailed body description). SDXL prompts CAN include nudity or erotic themes. **CRITICAL:** ALWAYS include chest size with cup size in SDXL prompts (e.g., "(flat chest:1.3)", "(AA cup:1.2)").
     
     Specific Type Instructions:
     - Face: Focus ONLY on facial details (eyes, hair, skin texture, expression).

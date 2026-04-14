@@ -30,8 +30,8 @@ export const SINGERS = [
     id: 'emma',
     name: 'Emma Vermeer',
     birthDate: '2008-11-03',
-    role: 'Feminine Baritone',
-    description: 'A confident and mischievous student from Amsterdam. She is lovers with Fannie. She plays keyboard and synthesizers (vintage Roland Juno-106) and acts as the group\'s natural leader. **Vocal Specialty: Female Baritone - Bluesy, Contralto, resonant chest voice, Off-beat, Velvety, Melancholy.**',
+    role: 'Feminine Contralto',
+    description: 'A confident and mischievous student from Amsterdam. She is lovers with Fannie. She plays keyboard and synthesizers (vintage Roland Juno-106) and acts as the group\'s natural leader. **Vocal Specialty: Female Contralto - Bluesy, resonant chest voice, Off-beat, Velvety, Melancholy.**',
     photo: '/singers/Emma_Vermeer.jpg',
     bioPath: '/singers/Emma_Vermeer.md'
   }

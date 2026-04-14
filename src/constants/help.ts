@@ -12,7 +12,7 @@ Noor is a four-member female ensemble with a rich, interconnected backstory:
 - **Miranda Noor [Soprano]:** The primary lyricist and composer. Born in NYC, she is of Indian, Dutch, and American descent. She is married to Annelies Brink. Her musical style is emotionally honest and intricate. She plays a vintage Fender Jazz Bass. **Vocal Specialty: Female Soprano - Ethereal, operatic, High-pitched, High-register, Angelic, Shimmering.**
 - **Annelies Brink [Alto]:** A Dutch graphic designer and the grounding presence of the group. She is married to Miranda. Her calm and supportive nature is reflected in her infectious laugh. **Vocal Specialty: Female Alto - Choral, Alt-Rock, raspy husky tone, Deep, Low-mid focused, Gravelly, Haunting.**
 - **Fannie de Jong [Mezzo-Soprano]:** A ball of kinetic energy from Utrecht. She is lovers with Emma Vermeer. She plays drums and percussion (Tama kit) and contributes rap and beatboxing. **Vocal Specialty: Female Mezzo-Soprano - Soulful, Rap, wide dramatic vibrato, Controlled, Syncopated, Staccato.**
-- **Emma Vermeer [Feminine Baritone]:** A confident and mischievous student from Amsterdam. She is lovers with Fannie. She plays keyboard and synthesizers (vintage Roland Juno-106) and acts as the group's natural leader. **Vocal Specialty: Female Baritone - Bluesy, Contralto, resonant chest voice, Off-beat, Velvety, Melancholy.**
+- **Emma Vermeer [Feminine Contralto]:** A confident and mischievous student from Amsterdam. She is lovers with Fannie. She plays keyboard and synthesizers (vintage Roland Juno-106) and acts as the group's natural leader. **Vocal Specialty: Female Contralto - Bluesy, resonant chest voice, Off-beat, Velvety, Melancholy.**
 
 ### Band Member Background & Physicality
 - **Age:** All singers are aged between 18 and 21 years old.
@@ -73,7 +73,7 @@ The interface is divided into four main areas:
 The "Brain" of the application resides in its system instructions.
 - **Persona Enforcement:** The AI must be instructed to act as the songwriter for Noor, incorporating the band members' specific roles and relationships. This includes their penchant for **double entendres**—singing about innocent objects (e.g., "beaver", "cock", "pussy", "wood") that can be interpreted sexually.
 - **Vocal Styles:** The AI only uses specific singing techniques (Opera, Rap, Yodeling, etc.) if they are explicitly selected in the "Instruments" list. Otherwise, it defaults to the singers' normal voices.
-- **Output Constraints:** The AI must return structured JSON containing the title, style, and lyrics. The style MUST always begin with the phrase: **"Female vocal quartet (Soprano, Alto, Mezzo-Soprano, Feminine Baritone)"**.
+- **Output Constraints:** The AI must return structured JSON containing the title, style, and lyrics. The style MUST always begin with the phrase: **"Female vocal quartet (Soprano, Alto, Mezzo-Soprano, Feminine Contralto)"**.
 - **Formatting Rules:** All instructions and tags in the lyrics (e.g., [Verse], [Miranda - Female Soprano - Ethereal]) MUST be in square brackets. Parentheses are forbidden as they interfere with SUNO's rendering.
 - **Image Prompt Engineering:** The AI must generate detailed prompts for image generation that:
   - Explicitly mention **four female singers** to prevent gender swapping.
@@ -125,8 +125,8 @@ Annelies is a Dutch graphic designer and Miranda's wife. She is the grounding pr
 ### Fannie de Jong [Mezzo-Soprano]
 Fannie is a ball of kinetic energy from Utrecht. She is lovers with Emma Vermeer. As the group's drummer, she plays a Tama kit with custom decals. She also contributes rap verses and beatboxing, bringing a playful and witty energy to the band's dynamic. **Vocal Specialty: Female Mezzo-Soprano - Soulful, Rap, wide dramatic vibrato, Controlled, Syncopated, Staccato.**
 
-### Emma Vermeer [Feminine Baritone]
-Emma is a confident and mischievous student from Amsterdam. She is lovers with Fannie. She plays keyboard and synthesizers, specifically a vintage Roland Juno-106. As the natural leader of the group, she has a keen eye for aesthetics and photography. **Vocal Specialty: Female Baritone - Bluesy, Contralto, resonant chest voice, Off-beat, Velvety, Melancholy.**
+### Emma Vermeer [Feminine Contralto]
+Emma is a confident and mischievous student from Amsterdam. She is lovers with Fannie. She plays keyboard and synthesizers, specifically a vintage Roland Juno-106. As the natural leader of the group, she has a keen eye for aesthetics and photography. **Vocal Specialty: Female Contralto - Bluesy, resonant chest voice, Off-beat, Velvety, Melancholy.**
 
 ### Band Member Background & Physicality
 - **Age:** All singers are aged between 18 and 21 years old.
