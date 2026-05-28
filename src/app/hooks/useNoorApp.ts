@@ -343,11 +343,24 @@ export function useNoorApp() {
         else if (file.name.endsWith('.xml')) type = 'xml';
         else if (file.type.startsWith('image/')) type = 'image';
 
+        let parsedContent = re.target.result;
+        if (type === 'json') {
+          try {
+            parsedContent = JSON.parse(re.target.result);
+            if (typeof parsedContent === 'object' && parsedContent !== null && ('lyrics' in parsedContent || 'title' in parsedContent)) {
+              setSong(parsedContent);
+              log('info', 'Song Loaded', `Song "${parsedContent.title || 'Untitled'}" loaded into workspace.`);
+            }
+          } catch (e) {
+            log('error', 'Parse Error', `Could not parse the JSON file "${file.name}".`);
+          }
+        }
+
         const item: LibraryItem = {
           id: Math.random().toString(36).substring(7),
           name: file.name,
           type,
-          content: type === 'image' ? re.target.result : re.target.result,
+          content: parsedContent,
         };
         addToLibrary(item, 'right');
         log('info', 'File Dropped', `File "${file.name}" added to library.`);
@@ -375,11 +388,24 @@ export function useNoorApp() {
               else if (file.name.endsWith('.xml')) type = 'xml';
               else if (file.type.startsWith('image/')) type = 'image';
 
+              let parsedContent = re.target.result;
+              if (type === 'json') {
+                try {
+                  parsedContent = JSON.parse(re.target.result);
+                  if (typeof parsedContent === 'object' && parsedContent !== null && ('lyrics' in parsedContent || 'title' in parsedContent)) {
+                    setSong(parsedContent);
+                    log('info', 'Song Loaded', `Song "${parsedContent.title || 'Untitled'}" loaded into workspace.`);
+                  }
+                } catch (e) {
+                  log('error', 'Parse Error', `Could not parse the JSON file "${file.name}".`);
+                }
+              }
+
               const item: LibraryItem = {
                 id: Math.random().toString(36).substring(7),
                 name: file.name,
                 type,
-                content: type === 'image' ? re.target.result : re.target.result,
+                content: parsedContent,
               };
               addToLibrary(item, 'right');
               log('info', 'File Loaded', `File "${file.name}" added to library.`);
