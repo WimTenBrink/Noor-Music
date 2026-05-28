@@ -38,6 +38,19 @@ export const StyleSidebar: React.FC<StyleSidebarProps> = ({
     }
   };
 
+  const sortedStyles = React.useMemo(() => {
+    return [...STYLES]
+      .sort((a, b) => a.type.localeCompare(b.type))
+      .map(group => ({
+        ...group,
+        substyles: [...group.substyles].sort((a, b) => a.name.localeCompare(b.name))
+      }));
+  }, []);
+
+  const sortedLibraryItems = React.useMemo(() => {
+    return [...items].sort((a, b) => a.name.localeCompare(b.name));
+  }, [items]);
+
   return (
     <aside className="w-[20vw] border-l border-lavender-border bg-lavender-bg/80 flex flex-col overflow-hidden">
       <div className="p-4 border-b border-lavender-border bg-lavender-surface/30">
@@ -47,7 +60,7 @@ export const StyleSidebar: React.FC<StyleSidebarProps> = ({
       <div className="flex-1 overflow-auto p-2 space-y-4">
         {/* Styles List */}
         <div className="space-y-2">
-          {STYLES.map(group => (
+          {sortedStyles.map(group => (
             <div key={group.type} className="space-y-1">
               <button 
                 onClick={() => toggleGroup(group.type)}
@@ -84,6 +97,42 @@ export const StyleSidebar: React.FC<StyleSidebarProps> = ({
             </div>
           ))}
         </div>
+
+        {/* Library Items Section */}
+        {sortedLibraryItems.length > 0 && (
+          <div className="pt-4 border-t border-lavender-border/30">
+            <h4 className="text-[10px] font-bold text-lavender-text/40 uppercase tracking-widest mb-2 px-2">Resources</h4>
+            <div className="flex flex-col gap-1">
+              {sortedLibraryItems.map(item => (
+                <div 
+                  key={item.id} 
+                  className="group flex items-center justify-between p-2 rounded hover:bg-lavender-surface/50 transition-colors"
+                >
+                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button 
+                      onClick={() => onDelete(item.id)}
+                      className="p-1 hover:bg-red-500 hover:text-white rounded text-red-400 transition-colors"
+                      title="Delete"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                    <button 
+                      onClick={() => onView(item)}
+                      className="p-1 hover:bg-lavender-accent hover:text-lavender-bg rounded text-lavender-accent transition-colors"
+                      title="View"
+                    >
+                      <Eye size={14} />
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-xs truncate font-medium">{item.name}</span>
+                    <div className="text-lavender-accent/50">{getItemIcon(item.type)}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </aside>
   );

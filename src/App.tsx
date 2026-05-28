@@ -24,6 +24,7 @@ import { MarkdownView } from './app/components/MarkdownView';
 import { SingerDialog } from './app/components/SingerDialog';
 import { StoryDialog } from './app/components/StoryDialog';
 import { PortraitDialog } from './app/components/PortraitDialog';
+import { ContentDialog } from './app/components/ContentDialog';
 import { X } from 'lucide-react';
 
 export default function App() {
@@ -55,6 +56,8 @@ export default function App() {
     handleGenerateStoryPrompts,
     rating,
     setRating,
+    selectedDialectId,
+    setSelectedDialectId,
     helpContent,
     setHelpContent,
     selectedSinger,
@@ -67,6 +70,10 @@ export default function App() {
     viewItem,
     setViewItem,
     handleFileDrop,
+    showContentSettings,
+    setShowContentSettings,
+    forbiddenTopics,
+    handleToggleForbiddenTopic,
   } = useNoorApp();
 
   const { logs } = useLogs();
@@ -171,6 +178,8 @@ export default function App() {
         onConfirm={handleGenerate} 
         selectedInstruments={selectedInstruments}
         selectedStyles={selectedStyles}
+        currentDialectId={selectedDialectId}
+        currentRating={rating}
       />
 
       <KaraokeDialog 
@@ -217,6 +226,13 @@ export default function App() {
         type={activePortraitType}
         prompts={portraitPrompts[activePortraitType]}
         onRegenerate={handleGeneratePortraits}
+      />
+
+      <ContentDialog
+        isOpen={showContentSettings}
+        onClose={() => setShowContentSettings(false)}
+        topics={forbiddenTopics}
+        onToggle={handleToggleForbiddenTopic}
       />
     </div>
   );

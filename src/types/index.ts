@@ -36,6 +36,13 @@ export interface PortraitPrompts {
 
 export type PortraitType = 'Face' | 'Torso' | 'Body';
 
+export interface ForbiddenTopics {
+  barefoot: boolean;
+  naturism: boolean;
+  farm: boolean;
+  singers: boolean;
+}
+
 export interface Song {
   title: string;
   style: string;

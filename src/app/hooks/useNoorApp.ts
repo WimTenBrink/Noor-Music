@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Song, Job, LibraryItem, PortraitPrompts, PortraitType } from '../../types';
+import { Song, Job, LibraryItem, PortraitPrompts, PortraitType, ForbiddenTopics } from '../../types';
 import { useJobQueue } from './useJobQueue';
 import { useLogs } from './useLogs';
 import { downloadJson } from '../../lib/utils';
@@ -8,6 +8,7 @@ import { SYSTEM_INSTRUCTIONS } from '../../constants/instructions';
 import { SINGERS } from '../../constants/singers';
 import { THE_BAND_MD } from '../../constants/the_band';
 import { SYSTEM_INSTRUCTIONS_MD, MANUAL_MD, CODE_OVERVIEW_MD } from '../../constants/help';
+import { findDialectById } from '../utils/languages';
 
 export function useNoorApp() {
   const [song, setSong] = useState<Song>({ 
@@ -48,12 +49,39 @@ export function useNoorApp() {
     };
   });
   const [rating, setRating] = useState<string>('PG');
+  const [selectedDialectId, setSelectedDialectId] = useState<string>(() => localStorage.getItem('noor-dialect-id') || 'en-GB');
+
+  useEffect(() => {
+    localStorage.setItem('noor-dialect-id', selectedDialectId);
+  }, [selectedDialectId]);
   const [helpContent, setHelpContent] = useState<{ title: string; content: string; filename?: string } | null>(null);
   const [selectedSinger, setSelectedSinger] = useState<{ name: string; photo: string; bioPath: string } | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [leftLibrary, setLeftLibrary] = useState<LibraryItem[]>([]);
   const [rightLibrary, setRightLibrary] = useState<LibraryItem[]>([]);
   const [viewItem, setViewItem] = useState<LibraryItem | null>(null);
+  const [showContentSettings, setShowContentSettings] = useState(false);
+  const [forbiddenTopics, setForbiddenTopics] = useState<ForbiddenTopics>(() => {
+    const saved = localStorage.getItem('noor-forbidden-topics');
+    if (saved) return JSON.parse(saved);
+    return {
+      barefoot: false,
+      naturism: false,
+      farm: false,
+      singers: false
+    };
+  });
+
+  useEffect(() => {
+    localStorage.setItem('noor-forbidden-topics', JSON.stringify(forbiddenTopics));
+  }, [forbiddenTopics]);
+
+  const handleToggleForbiddenTopic = (topic: keyof ForbiddenTopics) => {
+    setForbiddenTopics(prev => ({
+      ...prev,
+      [topic]: !prev[topic]
+    }));
+  };
 
   useEffect(() => {
     const initLeft = async () => {
@@ -137,10 +165,48 @@ export function useNoorApp() {
     setSong(prev => ({ ...prev, style: combined }));
   }, [selectedInstruments, selectedStyles]);
 
-  const handleGenerate = (instructions: string) => {
-    const prompt = GENERATE_PROMPT(instructions, selectedInstruments, selectedStyles, rating, !!song.story);
+  const handleGenerate = (instructions: string, musicInspiration?: string, targetDialectId?: string, targetRating?: string) => {
+    const resolvedDialectId = targetDialectId !== undefined ? targetDialectId : selectedDialectId;
+    const resolvedRating = targetRating !== undefined ? targetRating : rating;
+
+    if (targetDialectId !== undefined && targetDialectId !== selectedDialectId) {
+      setSelectedDialectId(targetDialectId);
+    }
+    if (targetRating !== undefined && targetRating !== rating) {
+      setRating(targetRating);
+    }
+
+    const dialect = findDialectById(resolvedDialectId);
+    let languageInfo = `${dialect.name}${dialect.description ? ` (${dialect.description})` : ''}`;
+    
+    // Custom fallbacks for mythical and celestial languages to write in English in that specific style
+    if (dialect.id === 'dra-MY') {
+      languageInfo = "Draconian. **CRITICAL STYLE RULES:** This is a fictional language. You MUST compose the lyrics entirely in English, but heavily style them with a mythical Draconian/Dragon thematic tone: use guttural, roaring, and powerful draconic phonetics, ancient runes imagery, and powerful dragon shout dynamics (e.g., [Draconic Shout vocal delivery]).";
+    } else if (dialect.id === 'dem-MY') {
+      languageInfo = "Demonic. **CRITICAL STYLE RULES:** This is a fictional language. You MUST compose the lyrics entirely in English, but heavily style them with an infernal/demonic thematic tone: use aggressive phrasing, intense or sinister dark gothic vocabulary, and performance tags indicating harsh register growling and dark heavy-metal styling (e.g., [Infernal growl], [Aggressive rasping delivery]).";
+    } else if (dialect.id === 'ang-MY') {
+      languageInfo = "Angelic. **CRITICAL STYLE RULES:** This is a fictional language. You MUST compose the lyrics entirely in English, but heavily style them with a celestial/angelic thematic tone: use ethereal, whispering, highly luminous, pure/sacred hymn poetic structures, and performance tags indicating shimmering, highly melodic head vocals and luminous whispering delivery (e.g., [Ethereal head vocal], [Luminous whispering delivery]).";
+    } else if (dialect.id === 'en-NL') {
+      languageInfo = "Dutch-English (Denglish / Dutch Accent). **CRITICAL STYLE RULES:** You MUST compose the lyrics in English, but heavily style them with classic Dutch-English (Denglish) characteristics: use literal word-for-word Dutch translations, Dutch-style directness, slight grammatical quirks (e.g., placing the verb at the end, missing present progressive), and playful Dutch-English vocabulary.";
+    } else if (dialect.id === 'en-SG') {
+      languageInfo = "Singaporean English (Singlish). **CRITICAL STYLE RULES:** You MUST compose the lyrics in English, but richly inflected with Singlish: use discourse particles like 'lah', 'leh', 'lor', 'siah', and colloquial blended sentence structures from Hokkien, Malay, and Mandarin.";
+    } else if (dialect.id === 'en-IN') {
+      languageInfo = "Indian English. **CRITICAL STYLE RULES:** You MUST compose the lyrics in English, styled with standard Indian English syntax, unique idioms (e.g. 'do the needful', 'prepone', 'years back'), double emphasis, rhythmic syllable-timed phrasing, and polite subcontinental framing.";
+    } else if (dialect.id === 'en-JM') {
+      languageInfo = "Jamaican English & Caribbean Patois. **CRITICAL STYLE RULES:** You MUST compose the lyrics in English, naturally infused with Jamaican Patois/Creole: use rhythmic pacing, doubled adjectives for emphasis, non-standard pronouns (e.g., 'dem', 'wi'), and terms from reggae/dancehall roots culture.";
+    } else if (dialect.id === 'en-BB') {
+      languageInfo = "Barbadian English (Bajan). **CRITICAL STYLE RULES:** You MUST compose the lyrics in Bajan-styled English: use high-vowel pronunciations, Bajan colloquial contractions, and colorful Barbadian idioms.";
+    } else if (dialect.id === 'en-TT') {
+      languageInfo = "Trinidadian English. **CRITICAL STYLE RULES:** You MUST compose the lyrics in Trinidadian English: use southern Caribbean sing-song meter, soca-rhythm lyric styling, and Trinidadian slang.";
+    } else if (dialect.id === 'en-NG') {
+      languageInfo = "Nigerian English & West African Pidgin. **CRITICAL STYLE RULES:** You MUST compose the lyrics in Nigerian-styled English or West African Pidgin: use expressive pidgin phrases (e.g., 'no shaking', 'abi', 'wahala'), high tone accents, and rich local proverbs.";
+    } else if (dialect.id === 'en-WAL') {
+      languageInfo = "Welsh English. **CRITICAL STYLE RULES:** You MUST compose the lyrics in Welsh English: use the beautiful, lyrical, melodic sing-song cadence of Wales, with distinct Welsh phrasing, endearments (e.g., 'bach'), and poetic regional vocabulary.";
+    }
+
+    const prompt = GENERATE_PROMPT(instructions, selectedInstruments, selectedStyles, resolvedRating, !!song.story, forbiddenTopics, languageInfo, musicInspiration);
     const jobId = addJob(`Generate: ${instructions.substring(0, 20)}...`, 'normal', prompt, apiKey || '');
-    log('info', 'Job Added', `New generation job added: ${jobId} (Rating: ${rating})`);
+    log('info', 'Job Added', `New generation job added: ${jobId} (Rating: ${resolvedRating}, Language: ${dialect.name})`);
     setShowGenerate(false);
   };
 
@@ -150,10 +216,13 @@ export function useNoorApp() {
     Story: ${story}
     No Clothes: ${noClothes ? 'Yes (generate prompts without any clothing)' : 'No'}
     
+    Constraints for all prompts (CRITICAL):
+    - Age & Fresh-Faced Appearance: Represent all singers with a highly youthful, fresh-faced collegiate, student-aged young adult female appearance, looking like college-age young women (appearing late-teens or early-twenties). Never specify numerical ages in the prompt.
+    - Physical Build & Slim Fitness: Depict all singers as tone, exceptionally slender, and well-trained, representing active, highly fit, grace-filled young adult women. Never depict them as mature/older, heavy, chubby, or overweight. Do NOT mention "BMI" or "weight" or "BMI around 20".
+    
     For each category, provide:
-    1. A WAN prompt: A detailed description of the person(s) body, followed by a description of the environment, and finally the clothes they are wearing (unless No Clothes is Yes).
-       **CRITICAL:** WAN prompts MUST be sanitized to contain no offensive or explicit words (e.g., avoid 'nude', 'no clothes', 'sensual', 'naked'). Use artistic and safe alternatives for WAN (e.g., 'natural state', 'unadorned', 'minimalist'). **Do NOT mention cup sizes in WAN prompts.**
-    2. An SDXL prompt: A weighted version of the WAN prompt (using (keyword:weight) syntax). SDXL prompts CAN be explicit, detailed, and include nudity or erotic themes. **CRITICAL:** ALWAYS include chest size with cup size in SDXL prompts (e.g., "(flat chest:1.3)", "(AA cup:1.2)").
+    1. A WAN prompt: A detailed, artistic, and sanitized description of the person(s)' youthful, athletic, and slender body/face and the surrounding environment. **CRITICAL CONSTRAINTS:** Do NOT mention any clothing, outfits, or garments at all in WAN prompts (the generator will decide what is most proper). Do NOT mention cup sizes in WAN prompts. WAN prompts MUST be sanitized to contain no offensive, sensual, or explicit words (e.g., avoid 'nude', 'no clothes', 'sensual', 'naked'). Use safe, clean, and artistic alternatives (e.g., 'natural state', 'unadorned', 'minimalist').
+    2. An SDXL prompt: A weighted version of the WAN prompt (using (keyword:weight) syntax). SDXL prompts CAN be explicit, detailed, include nudity or erotic themes, and may specify whether they are without clothing. **CRITICAL:** ALWAYS include chest size with cup size in SDXL prompts (e.g., "(flat chest:1.3)", "(AA cup:1.2)").
     
     Categories:
     - miranda: Single person
@@ -191,11 +260,13 @@ export function useNoorApp() {
     
     Portrait Type: ${type}
     
-    Constraints for all prompts:
+    Constraints for all prompts (CRITICAL):
     - The singer is standing facing the viewer in a relaxed pose.
     - A slight smile on her face.
     - Generate an interesting, natural background (e.g., forest, beach, garden, mountains).
-    - WAN prompts: Detailed description of the singer's body and face, including clothing. **CRITICAL:** WAN prompts MUST be sanitized to contain no offensive or explicit words. Do NOT mention cup sizes in WAN prompts.
+    - Age & Fresh-Faced Appearance: Represent the singers with a highly youthful, fresh-faced collegiate, student-aged young adult female appearance (appearing late-teens or early-twenties). Never specify numerical ages in the prompt.
+    - Physical Build & Slim Fitness: Depict all singers as tone, exceptionally slender, and well-trained, representing active, highly fit, grace-filled young adult women. Never depict them as mature/older, heavy, chubby, or overweight. Do NOT mention "BMI" or "weight" or "BMI around 20".
+    - WAN prompts: Detailed, artistic, and sanitized description of the singer's body and face. **CRITICAL:** Do NOT mention any clothing, outfits, or garments at all in WAN prompts, as the generator will decide what is most proper. Focused entirely on safe, artistic, non-explicit terms. WAN prompts MUST be sanitized to contain no offensive or explicit words. Do NOT mention cup sizes in WAN prompts.
     - SDXL prompts: Weighted version of the WAN prompt, but WITHOUT clothing (explicit and detailed body description). SDXL prompts CAN include nudity or erotic themes. **CRITICAL:** ALWAYS include chest size with cup size in SDXL prompts (e.g., "(flat chest:1.3)", "(AA cup:1.2)").
     
     Specific Type Instructions:
@@ -345,6 +416,9 @@ export function useNoorApp() {
           log('info', 'API Key Updated', 'New API key selected.');
         }
         break;
+      case 'content-settings':
+        setShowContentSettings(true);
+        break;
       case 'karaoke':
         if (!song.lyrics) {
           log('warn', 'Karaoke Warning', 'No lyrics available to display.');
@@ -446,6 +520,12 @@ export function useNoorApp() {
           content: result,
         };
         addToLibrary(item, 'right');
+
+        // Automatically trigger download/save as requested when song completes generation
+        if (lastDoneJob.name.startsWith('Generate:')) {
+          downloadJson(result, result.title || 'Untitled Song');
+          log('info', 'File Saved', `Freshly generated song "${result.title || 'Untitled'}" automatically saved and downloaded.`);
+        }
       }
     }
   }, [jobs, lastAppliedJobId]);
@@ -488,6 +568,8 @@ export function useNoorApp() {
     handleGenerateStoryPrompts,
     rating,
     setRating,
+    selectedDialectId,
+    setSelectedDialectId,
     helpContent,
     setHelpContent,
     selectedSinger,
@@ -502,5 +584,9 @@ export function useNoorApp() {
     viewItem,
     setViewItem,
     handleFileDrop,
+    showContentSettings,
+    setShowContentSettings,
+    forbiddenTopics,
+    handleToggleForbiddenTopic,
   };
 }

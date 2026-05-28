@@ -23,17 +23,21 @@ export const LibrarySidebar: React.FC<LibrarySidebarProps> = ({ title, items, on
     }
   };
 
+  const sortedItems = React.useMemo(() => {
+    return [...items].sort((a, b) => a.name.localeCompare(b.name));
+  }, [items]);
+
   return (
     <aside className="w-[20vw] border-r border-l border-lavender-border bg-lavender-bg/80 flex flex-col overflow-hidden">
       <div className="p-4 border-b border-lavender-border bg-lavender-surface/30">
         <h3 className="text-xs font-bold text-lavender-accent uppercase tracking-widest">{title}</h3>
       </div>
       <div className="flex-1 overflow-auto p-2">
-        {items.length === 0 ? (
+        {sortedItems.length === 0 ? (
           <div className="p-4 text-center text-xs text-lavender-text/30 italic">Empty</div>
         ) : (
           <div className="flex flex-col gap-1">
-            {items.map(item => (
+            {sortedItems.map(item => (
               <div 
                 key={item.id} 
                 className="group flex items-center justify-between p-2 rounded hover:bg-lavender-surface/50 transition-colors"

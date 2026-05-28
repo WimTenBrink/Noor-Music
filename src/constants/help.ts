@@ -15,8 +15,8 @@ Noor is a four-member female ensemble with a rich, interconnected backstory:
 - **Emma Vermeer [Feminine Contralto]:** A confident and mischievous student from Amsterdam. She is lovers with Fannie. She plays keyboard and synthesizers (vintage Roland Juno-106) and acts as the group's natural leader. **Vocal Specialty: Female Contralto - Bluesy, resonant chest voice, Off-beat, Velvety, Melancholy.**
 
 ### Band Member Background & Physicality
-- **Age:** All singers are aged between 18 and 21 years old.
-- **Physicality:** They are all well-defined, physically fit, and have small cup sizes.
+- **Age:** Highly youthful, fresh-faced, collegiate appearance matching student-aged young adult women (appearing late-teens/early-twenties), without specifying numerical age numbers in prompts.
+- **Physicality:** They are exceptionally athletic, tone, and highly slender well-trained young women, avoiding any mature or heavy/overweight traits. They have small cup sizes.
 - **Lifestyle:** They prefer to be barefoot everywhere they go and are not ashamed of their bodies. They frequently visit naturist resorts.
 - **Relationships:** While they are two couples (Miranda/Annelies and Fannie/Emma), they behave as a single family, almost a foursome in everything.
 - **Interests:** They have no desire to have children and no interest in men. Their bond is deeply sensual rather than purely sexual.
@@ -129,8 +129,8 @@ Fannie is a ball of kinetic energy from Utrecht. She is lovers with Emma Vermeer
 Emma is a confident and mischievous student from Amsterdam. She is lovers with Fannie. She plays keyboard and synthesizers, specifically a vintage Roland Juno-106. As the natural leader of the group, she has a keen eye for aesthetics and photography. **Vocal Specialty: Female Contralto - Bluesy, resonant chest voice, Off-beat, Velvety, Melancholy.**
 
 ### Band Member Background & Physicality
-- **Age:** All singers are aged between 18 and 21 years old.
-- **Physicality:** They are all well-defined, physically fit, and have small cup sizes.
+- **Age:** Highly youthful, fresh-faced, collegiate appearance matching student-aged young adult women (appearing late-teens/early-twenties), without specifying numerical age numbers in prompts.
+- **Physicality:** They are exceptionally athletic, tone, and highly slender well-trained young women, avoiding any mature or heavy/overweight traits. They have small cup sizes.
 - **Lifestyle:** They prefer to be barefoot everywhere they go and are not ashamed of their bodies. They frequently visit naturist resorts.
 - **Relationships:** While they are two couples (Miranda/Annelies and Fannie/Emma), they behave as a single family, almost a foursome in everything.
 - **Interests:** They have no desire to have children and no interest in men. Their bond is deeply sensual rather than purely sexual.

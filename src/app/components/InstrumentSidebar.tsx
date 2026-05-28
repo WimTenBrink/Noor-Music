@@ -38,6 +38,19 @@ export const InstrumentSidebar: React.FC<InstrumentSidebarProps> = ({
     }
   };
 
+  const sortedGroups = React.useMemo(() => {
+    return [...INSTRUMENTS]
+      .sort((a, b) => a.type.localeCompare(b.type))
+      .map(group => ({
+        ...group,
+        instruments: [...group.instruments].sort((a, b) => a.name.localeCompare(b.name))
+      }));
+  }, []);
+
+  const sortedLibraryItems = React.useMemo(() => {
+    return [...items].sort((a, b) => a.name.localeCompare(b.name));
+  }, [items]);
+
   return (
     <aside className="w-[20vw] border-r border-lavender-border bg-lavender-bg/80 flex flex-col overflow-hidden">
       <div className="p-4 border-b border-lavender-border bg-lavender-surface/30">
@@ -47,7 +60,7 @@ export const InstrumentSidebar: React.FC<InstrumentSidebarProps> = ({
       <div className="flex-1 overflow-auto p-2 space-y-4">
         {/* Instruments List */}
         <div className="space-y-2">
-          {INSTRUMENTS.map(group => (
+          {sortedGroups.map(group => (
             <div key={group.type} className="space-y-1">
               <button 
                 onClick={() => toggleGroup(group.type)}
@@ -86,11 +99,11 @@ export const InstrumentSidebar: React.FC<InstrumentSidebarProps> = ({
         </div>
 
         {/* Library Items Section */}
-        {items.length > 0 && (
+        {sortedLibraryItems.length > 0 && (
           <div className="pt-4 border-t border-lavender-border/30">
             <h4 className="text-[10px] font-bold text-lavender-text/40 uppercase tracking-widest mb-2 px-2">Resources</h4>
             <div className="flex flex-col gap-1">
-              {items.map(item => (
+              {sortedLibraryItems.map(item => (
                 <div 
                   key={item.id} 
                   className="group flex items-center justify-between p-2 rounded hover:bg-lavender-surface/50 transition-colors"

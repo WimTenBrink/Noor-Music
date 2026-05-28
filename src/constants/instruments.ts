@@ -29,7 +29,12 @@ export const INSTRUMENTS = [
       { name: "Throat Singing", description: "A type of singing in which the singer manipulates the resonances created as air travels from the lungs, past the vocal folds, and out of the lips to produce a melody." },
       { name: "Screaming", description: "A loud, high-pitched vocal technique used for intense emotional expression." },
       { name: "Melismatic", description: "A style of singing where a single syllable of text is sung while moving between several different notes in succession." },
-      { name: "Sprechgesang", description: "A vocal style between speaking and singing." }
+      { name: "Sprechgesang", description: "A vocal style between speaking and singing." },
+      { name: "Gregorian Chant", description: "Monophonic, unaccompanied sacred song of the Roman Catholic Church." },
+      { name: "Plainchant", description: "A body of chants used in the liturgies of the Western Church." },
+      { name: "Hildegardian Chant", description: "Melodically expansive and expressive chant style associated with Hildegard von Bingen." },
+      { name: "Monastic Female Chant", description: "Sacred chants performed by female monastic communities." },
+      { name: "Byzantine Female Chant", description: "The traditional liturgical music of the Eastern Orthodox Church performed by female voices." }
     ]
   },
   {

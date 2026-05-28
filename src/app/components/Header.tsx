@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NoorLogo } from './NoorLogo';
-import { FileText, Edit, Settings, HelpCircle, ChevronDown, Wand2, Terminal, Mic2, ImageIcon, BookOpen } from 'lucide-react';
+import { FileText, Settings, HelpCircle, ChevronDown, Wand2, Terminal, Mic2, ImageIcon, BookOpen } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 interface HeaderProps {
@@ -11,7 +11,13 @@ interface HeaderProps {
   setRating: (rating: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onAction, onGenerate, onShowLogs, rating, setRating }) => {
+export const Header: React.FC<HeaderProps> = ({ 
+  onAction, 
+  onGenerate, 
+  onShowLogs, 
+  rating, 
+  setRating
+}) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   const menus = [
@@ -26,21 +32,12 @@ export const Header: React.FC<HeaderProps> = ({ onAction, onGenerate, onShowLogs
       ]
     },
     {
-      id: 'edit',
-      label: 'Edit',
-      icon: <Edit size={16} />,
-      items: [
-        { id: 'cut', label: 'Cut' },
-        { id: 'copy', label: 'Copy' },
-        { id: 'paste', label: 'Paste' },
-      ]
-    },
-    {
       id: 'settings',
       label: 'Settings',
       icon: <Settings size={16} />,
       items: [
         { id: 'api-key', label: 'API Key' },
+        { id: 'content-settings', label: 'Content Settings' },
       ]
     },
     {
